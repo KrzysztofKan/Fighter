@@ -26,25 +26,24 @@ class character():
 
 
 
-    def receive_DMG():
+    def receive_DMG(self,damage):
+        self.HP -= damage
         pass
-    def deal_DMG():
+    def deal_DMG(self):
+        return self.Attack_DMG
         pass
-    def heal_HP():
-        pass
+    def heal_HP(self,heal):
+        self.HP += heal
     def print_character(self):
         print("Name: ",self.name,"\tLVL: ",self.LVL)
-        print("HP:",self.HP,"/",self.MAX_HP,"\tATK: ",self.Attack_DMG,"\n")
-        pass
-    def get_SPD():
-        pass
-    def isalive():
-        pass
-
-
-
-
-
+        print("HP:",self.HP,cl.Color.GREEN,"/",self.MAX_HP,cl.Color.OFF,"\tATK: ",self.Attack_DMG,"\n")
+    def get_SPD(self):
+        return self.SPD
+    def isalive(self):
+        if self.HP > 0 :
+            return True
+        else : return False
+    
 
 
 # main loop/logic
