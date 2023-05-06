@@ -16,13 +16,15 @@ base_SPD_per_Dexterity = 2
 class character():
     def __init__(self,player = False) -> None:
         self.LVL = 1
+        self.name = 'Joe'
         self.MAX_HP = base_Hp + (base_Strenght * base_HP_per_Strenght)
         self.HP = self.MAX_HP
         self.Attack_DMG = base_Strenght * base_DMG_per_Strenght
         self.SPD = base_Dexterity
+        self.alive = True
 
 
-    
+
 
     def receive_DMG():
         pass
@@ -30,7 +32,9 @@ class character():
         pass
     def heal_HP():
         pass
-    def print_character():
+    def print_character(self):
+        print("Name: ",self.name,"\tLVL: ",self.LVL)
+        print("HP:",self.HP,"/",self.MAX_HP,"\tATK: ",self.Attack_DMG,"\n")
         pass
     def get_SPD():
         pass
@@ -45,6 +49,8 @@ class character():
 
 # main loop/logic
 def main():
+    pl = character()
+    pl.print_character()
     return
 
 
