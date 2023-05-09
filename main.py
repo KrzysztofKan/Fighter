@@ -1,4 +1,6 @@
 import colorist as cl
+import tkinter as tk
+import tkinter.ttk as ttk
 
 # setup base variables for balance
 base_Hp = 10
@@ -34,16 +36,21 @@ class character():
     def receive_DMG(self,damage):
         self.HP -= damage
         pass
+
     def deal_DMG(self):
         return self.Attack_DMG
         pass
+
     def heal_HP(self,heal):
         self.HP += heal
+
     def print_character(self):
         print("Name: ",self.name,"\tLVL: ",self.LVL)
         print("HP:",self.HP,cl.Color.GREEN,"/",self.MAX_HP,cl.Color.OFF,"\tATK: ",self.Attack_DMG,"\n")
+
     def get_SPD(self):
         return self.SPD
+    
     def isalive(self):
         if self.HP > 0 :
             return True
@@ -53,9 +60,25 @@ class character():
 
 # main loop/logic
 def main():
-    pl = character()
-    pl.print_character()
-    return
+    window = tk.Tk(className="Fighter")
+
+    player_frame = tk.Frame(master=window,relief="raised",width=200,height=100)
+    player_frame.pack(fill=tk.BOTH,side=tk.LEFT)
+
+    player_name = tk.Label(master=player_frame,text="Name")
+    player_name.pack()
+
+    mid_frame = tk.Frame(master=window,relief="flat",width=100,background="black")
+    mid_frame.pack(fill=tk.BOTH,side=tk.LEFT)
+
+    enemy_frame = tk.Frame(master=window,relief="raised",width=200)
+    enemy_frame.pack(fill=tk.BOTH,side=tk.RIGHT)
+
+    player_frame.pack()
+    mid_frame.pack()
+    enemy_frame.pack()
+    window.mainloop()
+   
 
 
 main()
