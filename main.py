@@ -42,14 +42,27 @@ def main():
     player_name = tk.Label(master=player_frame,text=pl.get_name())
     player_name.grid(row=0,column=1)
     #player LVL
-    player_lvl1 = tk.Label(master=player_frame,text="LVL: ")
+    player_lvl1 = tk.Label(master=player_frame,text="LVL: ",justify="left")
     player_lvl1.grid(row=1,column=0)
-    player_lvl2 = tk.Label(master=player_frame,text=pl.get_level())
-    player_lvl2.grid(row=1,column=2)
-    player_lvl3 = tk.Button(master=player_frame,text="+",command=lvlup)
-    player_lvl3.grid(row=1,column=3)
+    player_lvl2 = tk.Label(master=player_frame,text=pl.get_level(),justify="center")
+    player_lvl2.grid(row=1,column=1)
+    player_lvl3 = tk.Button(master=player_frame,text="LVL Up",command=lvlup,overrelief="ridge")
+    player_lvl3.grid(row=1,column=2)
     #playerEXP
-
+    player_XPBar = ttk.Progressbar(master=player_frame,maximum=4,mode="determinate",value=1)
+    s = ttk.Style
+    player_XPBar
+    player_XPBar.grid(row=3,column=1,columnspan=3)
+    player_XP = tk.Label(master=player_frame,text="XP")
+    player_XP.grid(row=3,column=0)
+    player_EXP = tk.Label(master=player_frame,text="0")
+    player_EXP.grid(row=3,column=1)
+    player_EXPsep= tk.Label(master=player_frame,text="/")
+    player_EXPsep.grid(row=3,column=2)
+    player_MEXP = tk.Label(master=player_frame,text="100")
+    player_MEXP.grid(row=3,column=3)
+    player_XPBar = ttk.Progressbar(master=player_frame,maximum=100,phase=50)
+    player_XPBar.grid(row=3,column=1,columnspan=3)
 
     #Actions panel Setup
     mid_frame = tk.Frame(master=window,relief="flat",width=100,background="black")
@@ -64,6 +77,9 @@ def main():
     enemy_namel.grid(row=0,column=0)
     enemy_name = tk.Label(master=enemy_frame,text=en.get_name())
     enemy_name.grid(row=0,column=1)
+
+    ver = tk.Label(master=window,text="Unversioned-Alpha",justify="right")
+    ver.grid(row=1,column=2)
 
     window.mainloop()
    
