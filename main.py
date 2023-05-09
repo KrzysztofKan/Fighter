@@ -1,82 +1,50 @@
-import colorist as cl
+import character
 import tkinter as tk
 import tkinter.ttk as ttk
 
-# setup base variables for balance
-base_Hp = 10
-base_DMG = 1
-base_Strenght = 5
-base_Dexterity = 5
-base_Inteligence = 5
-base_Armor = 0
-# stats multipliers
-str_HP_Mult = 22
-str_HPreg_Mult = 0.1
-agi_SPD_Mult = 1
-agi_Armor_Mult = 0.167
-int_Mana_Mult = 12
-int_ManaReg_Mult = 0.05
-int_MagRes_Mult = 0.1
-
-base_DMG_per_Strenght = 2
-
-
-# character class defining basic attributes and functions
-class character():
-    def __init__(self,player = False,LVL = 1,name = "") -> None:
-        self.LVL = LVL
-        self.name = name
-        self.MAX_HP = base_Hp + (base_Strenght * str_HP_Mult)
-        self.HP = self.MAX_HP
-        self.Attack_DMG = base_Strenght * base_DMG_per_Strenght
-        self.SPD = base_Dexterity * agi_SPD_Mult
-        self.Armor = base_Armor + (base_Dexterity * agi_Armor_Mult)
-        self.alive = True
-
-    def receive_DMG(self,damage):
-        self.HP -= damage
-        pass
-
-    def deal_DMG(self):
-        return self.Attack_DMG
-        pass
-
-    def heal_HP(self,heal):
-        self.HP += heal
-
-    def print_character(self):
-        print("Name: ",self.name,"\tLVL: ",self.LVL)
-        print("HP:",self.HP,cl.Color.GREEN,"/",self.MAX_HP,cl.Color.OFF,"\tATK: ",self.Attack_DMG,"\n")
-
-    def get_SPD(self):
-        return self.SPD
-    
-    def isalive(self):
-        if self.HP > 0 :
-            return True
-        else : return False
-    
-
-
 # main loop/logic
 def main():
+
+    pl = character(True,1,"John")
+    en = character(False,1,"Wolf")
+
+    def lvl():
+        pl.level_up()
+        i = pl.get_level()
+        player_lvl2["text"] = f"{i}"
+
+    #Window setup
     window = tk.Tk(className="Fighter")
+    window.columnconfigure([0,1,2],minsize=250,uniform=True)
 
+    #Player Card setup
     player_frame = tk.Frame(master=window,relief="raised",width=200,height=100)
-    player_frame.pack(fill=tk.BOTH,side=tk.LEFT)
+    player_frame.grid(sticky="nsew",row=0,column=0)
 
-    player_name = tk.Label(master=player_frame,text="Name")
-    player_name.pack()
+    #player name
+    player_namel = tk.Label(master=player_frame,text="Name: ")
+    player_namel.grid(row=0,column=0)
+    player_name = tk.Label(master=player_frame,text=pl.get_name())
+    player_name.grid(row=0,column=1)
+    #player LVL
+    player_lvl1 = tk.Label(master=player_frame,text="LVL: ")
+    player_lvl1.grid(row=1,column=0)
+    player_lvl2 = tk.Label(master=player_frame,text=pl.get_level())
+    player_lvl2.grid(row=1,column=2)
+    player_lvl3 = tk.Button(master=player_frame,text="+",command=lvl)
+    player_lvl3.grid(row=1,column=3)
+    #player EXP
 
+
+    #Actions panel Setup
     mid_frame = tk.Frame(master=window,relief="flat",width=100,background="black")
-    mid_frame.pack(fill=tk.BOTH,side=tk.LEFT)
+    mid_frame.grid(sticky="nsew",row=0,column=1)
 
+    #Enemy Card Setup
     enemy_frame = tk.Frame(master=window,relief="raised",width=200)
-    enemy_frame.pack(fill=tk.BOTH,side=tk.RIGHT)
+    enemy_frame.grid(sticky="nsew",row=0,column=2)
 
-    player_frame.pack()
-    mid_frame.pack()
-    enemy_frame.pack()
+
     window.mainloop()
    
 
