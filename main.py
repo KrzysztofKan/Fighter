@@ -13,6 +13,10 @@ def main():
         pl.level_up()
         i = pl.get_level()
         player_lvl2["text"] = f"{i}"
+        player_XPBar.step(99)
+    
+    def getXP():
+        player_XPBar.step(10)
 
     #Window setup
     window = tk.Tk(className="Fighter")
@@ -28,7 +32,6 @@ def main():
     image = Image.open("C:\Python\Fighter\Assets\Portrait_Placeholder.bmp")
     image = image.resize((100,100))
     portrait = ImageTk.PhotoImage(image)
-    
     
     portrait_frame = tk.Frame(master=player_frame,width=1,height=1,relief="raised")
     player_portrait = tk.Label(master=portrait_frame,image=portrait,anchor="center",width=100,height=100,justify="right")
@@ -49,8 +52,8 @@ def main():
     player_lvl3 = tk.Button(master=player_frame,text="LVL Up",command=lvlup,overrelief="ridge")
     player_lvl3.grid(row=1,column=2)
     #playerEXP
-    player_XPBar = ttk.Progressbar(master=player_frame,maximum=4,mode="determinate",value=1)
-    s = ttk.Style
+    player_XPBar = ttk.Progressbar(master=player_frame,maximum=100,mode="determinate")
+    player_XPBar.grid(row=3,column=1,columnspan=3)
     player_XPBar
     player_XPBar.grid(row=3,column=1,columnspan=3)
     player_XP = tk.Label(master=player_frame,text="XP")
@@ -59,10 +62,9 @@ def main():
     player_EXP.grid(row=3,column=1)
     player_EXPsep= tk.Label(master=player_frame,text="/")
     player_EXPsep.grid(row=3,column=2)
-    player_MEXP = tk.Label(master=player_frame,text="100")
+    player_MEXP = tk.Label(master=player_frame,text="100",justify="left")
     player_MEXP.grid(row=3,column=3)
-    player_XPBar = ttk.Progressbar(master=player_frame,maximum=100,phase=50)
-    player_XPBar.grid(row=3,column=1,columnspan=3)
+    
 
     #Actions panel Setup
     mid_frame = tk.Frame(master=window,relief="flat",width=100,background="black")
