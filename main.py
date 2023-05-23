@@ -1,117 +1,92 @@
-import colorsys
+from imgui.integrations.glfw import GlfwRenderer
+import OpenGL.GL as gl
+import glfw
 import imgui
-import os
 import sys
 import character as ch
-import tkinter as tk
-import tkinter.ttk as ttk
-from PIL import ImageTk,Image
+
 
 
 # main loop/logic
 def main():
-
-    # initilize imgui context (see documentation)
-
     imgui.create_context()
-    imgui.get_io().display_size = 100, 100
-    imgui.get_io().fonts.get_tex_data_as_rgba32()
-        # start new frame context
-    imgui.new_frame()
+    window = impl_glfw_init()
+    impl = GlfwRenderer(window)
 
-        # open new window context
-    imgui.begin("Your first window!", True)
+    show_custom_window = True
 
-        # draw text label inside of current window
-    imgui.text("Hello world!")
+    while not glfw.window_should_close(window):
+        glfw.poll_events()
+        impl.process_inputs()
 
-        # close current window context
-    imgui.end()
+        imgui.new_frame()
 
-        # pass all drawing comands to the rendering pipeline
-        # and close frame context
-    imgui.render()
-    imgui.end_frame()
+        if imgui.begin_main_menu_bar():
+            if imgui.begin_menu("File", True):
+                clicked_quit, selected_quit = imgui.menu_item(
+                    "Quit", "Cmd+Q", False, True
+                )
+                if clicked_quit:
+                    sys.exit(0)
 
-    # pl = ch.character(True,1,"John")
-    # en = ch.character(False,1,"Wolf")
+                imgui.end_menu()
+            if imgui.begin_menu("Options",True):
+                Option1,selecte_op1 = imgui.menu_item("General","", False, True)
+                if Option1:
+                    show_custom_window = True
+               
+                imgui.end_menu()
+            imgui.end_main_menu_bar()
 
-    # def lvlup():
-    #     pl.level_up()
-    #     i = pl.get_level()
-    #     player_lvl2["text"] = f"{i}"
-    #     player_XPBar.step(99)
-    
-    # def getXP():
-    #     player_XPBar.step(10)
+        if show_custom_window:
+            is_expand, show_custom_window = imgui.begin("Custom window", True)
+            if is_expand:
+                imgui.text("Bar")
+                imgui.text_ansi("B\033[31marA\033[mnsi ")
+                imgui.text_ansi_colored("Eg\033[31mgAn\033[msi ", 0.2, 1.0, 0.0)
+                imgui.extra.text_ansi_colored("Eggs", 0.2, 1.0, 0.0)
+            imgui.end()
 
-    # #Window setup
-    # window = tk.Tk(className="Fighter")
-    # window.columnconfigure([0,1,2],minsize=250,uniform=True)
-    # window.resizable(False,False)
+        #show_test_window()
+        # imgui.show_test_window()
 
-    # #Player Card setup
-    # player_frame = tk.Frame(master=window,relief="raised",width=200,height=100)
-    # player_frame.grid(sticky="nsew",row=0,column=0)
+        gl.glClearColor(1.0, 1.0, 1.0, 1)
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
 
-    # #Player portrait
-    # #portrait = ImageTk.PhotoImage(Image.open("C:\Python\Fighter\Assets\Portrait_Placeholder.bmp"))
-    # image = Image.open("C:\Python\Fighter\Assets\Portrait_Placeholder.bmp")
-    # image = image.resize((100,100))
-    # portrait = ImageTk.PhotoImage(image)
-    
-    # portrait_frame = tk.Frame(master=player_frame,width=1,height=1,relief="raised")
-    # player_portrait = tk.Label(master=portrait_frame,image=portrait,anchor="center",width=100,height=100,justify="right")
-    # player_portrait.grid(row=0,column=0)
-    # portrait_frame.grid(row=0,column=4,columnspan=2,rowspan=10)
-    
+        imgui.render()
+        impl.render(imgui.get_draw_data())
+        glfw.swap_buffers(window)
 
-    # #player name
-    # player_namel = tk.Label(master=player_frame,text="Name: ")
-    # player_namel.grid(row=0,column=0)
-    # player_name = tk.Label(master=player_frame,text=pl.get_name())
-    # player_name.grid(row=0,column=1)
-    # #player LVL
-    # player_lvl1 = tk.Label(master=player_frame,text="LVL: ",justify="left")
-    # player_lvl1.grid(row=1,column=0)
-    # player_lvl2 = tk.Label(master=player_frame,text=pl.get_level(),justify="center")
-    # player_lvl2.grid(row=1,column=1)
-    # player_lvl3 = tk.Button(master=player_frame,text="LVL Up",command=lvlup,overrelief="ridge")
-    # player_lvl3.grid(row=1,column=2)
-    # #playerEXP
-    # player_XPBar = ttk.Progressbar(master=player_frame,maximum=100,mode="determinate")
-    # player_XPBar.grid(row=3,column=1,columnspan=3)
-    # player_XPBar
-    # player_XPBar.grid(row=3,column=1,columnspan=3)
-    # player_XP = tk.Label(master=player_frame,text="XP")
-    # player_XP.grid(row=3,column=0)
-    # player_EXP = tk.Label(master=player_frame,text="0")
-    # player_EXP.grid(row=3,column=1)
-    # player_EXPsep= tk.Label(master=player_frame,text="/")
-    # player_EXPsep.grid(row=3,column=2)
-    # player_MEXP = tk.Label(master=player_frame,text="100",justify="left")
-    # player_MEXP.grid(row=3,column=3)
-    
-
-    # #Actions panel Setup
-    # mid_frame = tk.Frame(master=window,relief="flat",width=100,background="black")
-    # mid_frame.grid(sticky="nsew",row=0,column=1)
-
-    # #Enemy Card Setup
-    # enemy_frame = tk.Frame(master=window,relief="raised",width=200)
-    # enemy_frame.grid(sticky="nsew",row=0,column=2)
-
-    # #player name
-    # enemy_namel = tk.Label(master=enemy_frame,text="Name: ")
-    # enemy_namel.grid(row=0,column=0)
-    # enemy_name = tk.Label(master=enemy_frame,text=en.get_name())
-    # enemy_name.grid(row=0,column=1)
-
-    # ver = tk.Label(master=window,text="Unversioned-Alpha",justify="right")
-    # ver.grid(row=1,column=2)
-
-    # window.mainloop()
-   
+    impl.shutdown()
+    glfw.terminate()
 
 
-main()
+def impl_glfw_init():
+    width, height = 1280, 720
+    window_name = "Fighter"
+
+    if not glfw.init():
+        print("Could not initialize OpenGL context")
+        sys.exit(1)
+
+    # OS X supports only forward-compatible core profiles from 3.2
+    glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3)
+    glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
+    glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
+
+    glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, gl.GL_TRUE)
+
+    # Create a windowed mode window and its OpenGL context
+    window = glfw.create_window(int(width), int(height), window_name, None, None)
+    glfw.make_context_current(window)
+
+    if not window:
+        glfw.terminate()
+        print("Could not initialize Window")
+        sys.exit(1)
+
+    return window
+
+
+if __name__ == "__main__":
+    main()
